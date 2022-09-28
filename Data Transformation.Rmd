@@ -1,0 +1,117 @@
+---
+title: "Homework5"
+author: "Yige Ren"
+output:
+  html_document:
+    df_print: paged
+  pdf_document: default
+---
+
+
+## Preparation
+```{r}
+install.packages("tidyverse")
+install.packages("readr")
+library(tidyverse)
+library(readr)
+```
+
+```{r}
+campaign <- read_tsv("marketing_campaign.csv")
+```
+
+
+## Problem1 
+Use ggplot to graph the distribution of Income values.
+
+```{r}
+install.packages("scales")
+library(scales) 
+
+ggplot(campaign, aes(x=Income))+
+  geom_histogram(binwidth=10000, na.rm=TRUE)+
+  scale_x_continuous(labels = comma) # to modify the scientific notation on the x-axis
+```
+
+
+## Problem2
+Count the number of records that have a missing Income value. Also count the number of records with Income less than or equal to 50,000. (You can use two separate R expressions.)
+
+```{r}
+missing_Income <- sum(is.na(campaign$Income))
+missing_Income
+
+
+less_Income <- sum(campaign$Income<=50000, na.rm = TRUE)
+less_Income
+
+##OR
+campaign %>% count(Income<=50000)
+```
+
+
+## Problem3
+Use ggplot to graph the distribution of the amount spent on wine in the last two years for those records with missing Income values (and those records only).
+
+```{r}
+campaign %>% 
+  filter(is.na(Income)) %>%
+  ggplot(aes(x=MntWines))+
+  geom_histogram(binwidth=15)
+```
+
+
+## Problem4
+Compute the mean amount spent on wine in the last two years by education level. Your result should be a data frame with two columns: education level and the corresponding mean amount spent on wine. See this discussion (Links to an external site.) in R4DS.
+
+```{r}
+campaign %>%
+  group_by(Education) %>%
+  summarise(Mean_MntWines=mean(MntWines))
+```
+
+
+## Problem5
+Generate a data frame with a new column score that is Income minus 10 times Kidhome. This score no doubt will capture deep insights into customer behavior. Call that data frame scored. See this discussion (Links to an external site.) in R4DS.
+
+```{r}
+scored <- campaign %>%
+  mutate(score = Income - 10*Kidhome)
+
+scored
+```
+
+
+## Problem6
+Use ggplot to plot the distribution of values in this new column score in the data frame scored.
+
+```{r}
+ggplot(scored, aes(x=score)) + 
+  geom_histogram(binwidth=7000, na.rm=TRUE) +
+  scale_x_continuous(labels = comma) 
+```
+
+
+## Problem7
+Use ggplot to plot the distribution of values in this new column score only for records with Income less than or equal to 50,000.
+
+```{r}
+scored %>%
+  filter(Income <= 50000) %>%
+  ggplot(aes(x=score))+
+  geom_histogram(binwidth=1000)
+```
+
+
+## Problem8
+Compute the mean score, maximum score, and number of records by Education level. Your result should be a data frame with four columns: education level, the corresponding mean and maximum score, and the number of records for that education level. Again see this discussion (Links to an external site.) in R4DS.
+
+```{r}
+scored %>%
+  group_by(Education) %>%
+  summarise(
+    mean=mean(score, na.rm=TRUE),
+    max=max(score, na.rm=TRUE),
+    count=n()
+  )
+```
