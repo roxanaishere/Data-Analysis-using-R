@@ -3,6 +3,7 @@ title: "Intermediate Data Visualization with ggplot2"
 output:
   html_document:
     df_print: paged
+  pdf_document: default
 ---
 This case study is part of my work in DataCamp **Data Scientist with R** certificate.
 
@@ -12,16 +13,12 @@ The datasets used are R built-in datasets.
 
 ## Preliminaries
 
-```{r}
-install.packages("tidyverse")
+```{r message=FALSE, warning=FALSE}
+
 library(tidyverse)
-install.packages("lubridate")
 library(lubridate)
-install.packages("lattice")
 library(lattice)
-install.packages("RColorBrewer")
 library(RColorBrewer)
-install.packages("openair")
 library(openair)
 
 mtcars1 <- mtcars %>%
@@ -32,7 +29,7 @@ mtcars1 <- mtcars %>%
 Topics include a variety of linear models, descriptive and inferential statistics (mean, standard deviation and confidence intervals) and custom functions.
 
 - Modifying stat_smooth:
-```{r}
+```{r message=FALSE, warning=FALSE}
 ggplot(mtcars1, aes(x = wt, y = mpg, color = fcyl)) +
   geom_point() +
   stat_smooth(se = FALSE,aes(color="All")) +
@@ -40,7 +37,7 @@ ggplot(mtcars1, aes(x = wt, y = mpg, color = fcyl)) +
 ```
 
 - Position
-```{r}
+```{r message=FALSE, warning=FALSE}
 posn_j <- position_jitter(width = 0.2)
 posn_d <- position_dodge(width = 0.1)
 posn_jd <- position_jitterdodge(jitter.width = 0.2, dodge.width = 0.1)
@@ -65,7 +62,7 @@ p_wt_vs_fcyl_by_fam +
 Topics include various ways of effectively using layers to clearly visualize lognormal datasets, variables with units, and periodic data.
 
 - Zooming In, Aspect Ratio, and Clip
-```{r}
+```{r message=FALSE, warning=FALSE}
 #Zomming in
 ggplot(mtcars1, aes(x = wt, y = hp, color = fam)) +
   geom_point() +
@@ -88,7 +85,7 @@ ggplot(mtcars1, aes(wt, mpg)) +
 ```
 
 - Transform scales
-```{r}
+```{r message=FALSE, warning=FALSE}
 ggplot(msleep, aes(bodywt, brainwt)) +
   geom_point() +
   scale_x_log10() +
@@ -101,7 +98,7 @@ ggplot(msleep, aes(bodywt, brainwt)) +
   coord_trans(x="log10",y="log10")
 ```
 - Double and flipped axes
-```{r}
+```{r message=FALSE, warning=FALSE}
 # Double axes
 airquality1 <- airquality %>%
   mutate(Date=make_date(month=Month, day= Day))
@@ -130,7 +127,7 @@ ggplot(mtcars2, aes(car, wt)) +
 ```
 
 - Pie Charts
-```{r}
+```{r message=FALSE, warning=FALSE}
 # Pie chars
 ggplot(mtcars1, aes(x = 1, fill = fcyl)) +
   geom_bar(width=0.1) +
@@ -151,7 +148,7 @@ ggplot(mydata1, aes(wd, fill = ws)) +
 Topics include wrap facets and arrange them in a grid, as well as providing custom labeling.
 
 - Facet layer
-```{r}
+```{r message=FALSE, warning=FALSE}
 mtcars3 <- mtcars1 %>%
   mutate(fcyl_fam=interaction(fcyl,fam))
 ggplot(mtcars3, aes(x = wt, y = mpg, color = fcyl_fam, size = disp)) +
@@ -161,14 +158,14 @@ ggplot(mtcars3, aes(x = wt, y = mpg, color = fcyl_fam, size = disp)) +
 ```
 
 - Labeling facets
-```{r}
+```{r message=FALSE, warning=FALSE}
 ggplot(mtcars, aes(wt, mpg)) +
   geom_point() +
   facet_grid(cols = vars(vs, cyl), labeller = label_context)
 ```
 
 - Facet plotting spaces
-```{r}
+```{r message=FALSE, warning=FALSE}
 # Continuous variables
 ggplot(mtcars, aes(wt, mpg)) +
   geom_point() + 
@@ -181,7 +178,7 @@ ggplot(mtcars2, aes(x = mpg, y = car, color = fam)) +
 ```
 
 - Margin plots
-```{r}
+```{r message=FALSE, warning=FALSE}
 mtcars4 <- mtcars1 %>%
   mutate(fvs=factor(vs))
 ggplot(mtcars4, aes(x = wt, y = mpg)) + 
@@ -194,14 +191,14 @@ ggplot(mtcars4, aes(x = wt, y = mpg)) +
 Topics include dynamite plots, heatmaps, and heatmap alternatives.
 
 - Dynamite plots
-```{r}
+```{r message=FALSE, warning=FALSE}
 ggplot(mtcars1, aes(x = fcyl, y = wt)) +
   stat_summary(fun.y = mean, geom = "bar", fill = "skyblue") +
   stat_summary(fun.data = mean_sdl, fun.args = list(mult = 1), geom = "errorbar", width = 0.1)
 ```
 
 - Heatmap
-```{r}
+```{r message=FALSE, warning=FALSE}
 red_brewer_palette <- brewer.pal(9, "Reds")
 
 ggplot(barley, aes(x = year, y = variety, fill = yield)) +
@@ -212,7 +209,7 @@ ggplot(barley, aes(x = year, y = variety, fill = yield)) +
 ```
 
 - Heatmap Alternatives
-```{r}
+```{r message=FALSE, warning=FALSE}
 ggplot(barley,aes(year,yield,color=variety,group=variety)) +
  geom_line() +
   facet_wrap( ~ site, nrow = 1)
@@ -223,7 +220,7 @@ ggplot(barley, aes(x = year, y = yield, color = site, group = site, fill = site)
 ```
 
 - A real-world problem
-```{r}
+```{r message=FALSE, warning=FALSE}
 TG<-ToothGrowth
 TG$dose <- as.numeric(as.character(TG$dose))
 
