@@ -1,9 +1,9 @@
 ---
 title: "Intermediate Data Visualization with ggplot2"
 output:
+  pdf_document: default
   html_document:
     df_print: paged
-  pdf_document: default
 ---
 This case study is part of my work in DataCamp **Data Scientist with R** certificate.
 
